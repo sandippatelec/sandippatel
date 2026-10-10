@@ -16,7 +16,7 @@ Technical leader with 16+ years delivering real-time embedded, edge, and cloud s
 
 ## 💼 Experience
 
-### **Technical Architect ** — *INCEDO INC*
+### **Technical Architect** — *INCEDO INC*
 `Aug 2021 – Present`
 - Led design and implementation of the Edge analytics layer within a high-throughput network analytics platform, enabling real-time threat detection via a hybrid streaming + batch (ETL) architecture. 
 - Engineered security-hardened C/C++ build pipeline aligned with IEC 62443 practices – static analysis (cppcheck) in CI, pinned-version Docker builds, Black Duck SCA/vulnerability management, and distroless (shell-less) runtime images to minimize attack surface 
