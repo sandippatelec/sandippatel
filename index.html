@@ -120,6 +120,13 @@
       cursor: pointer;
     }
 
+    .cta-phone-number {
+      display: none;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      align-self: center;
+    }
+
     .cta-primary {
       background: var(--gradient-accent);
       color: #ffffff;
@@ -146,7 +153,7 @@
       font-size: 1.5rem;
       font-weight: 700;
       color: #ffffff;
-      margin: 40px 0 20px;
+      margin: 32px 0 12px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -334,14 +341,16 @@
       const name = h1 ? h1.innerText : 'Your Name';
       const role = h3 ? h3.innerText : 'Developer';
       
-      // Look for a short intro paragraph right under headings
+      // Only use a paragraph between the name/role and the first section heading
+      // for the banner, so section content (such as About Me) stays in its section.
       let introText = '';
-      const paragraphs = Array.from(tempDiv.querySelectorAll('p'));
-      for (let p of paragraphs) {
-        if (!p.querySelector('img') && !p.querySelector('a') && p.innerText.trim().length > 20) {
-          introText = p.innerText;
+      let current = h3 ? h3.nextElementSibling : null;
+      while (current && !/^H[1-6]$/.test(current.tagName)) {
+        if (current.tagName === 'P' && !current.querySelector('img, a') && current.innerText.trim().length > 20) {
+          introText = current.innerText.trim();
           break;
         }
+        current = current.nextElementSibling;
       }
 
       // Collect links from the top
@@ -350,7 +359,8 @@
       const socialLinks = topLinks.slice(0, 4); // First few action buttons
 
       socialLinks.forEach(link => {
-        const text = link.innerText.toLowerCase();
+        const label = (link.innerText.trim() || link.querySelector('img')?.alt || link.title || 'Open link').trim();
+        const text = label.toLowerCase();
         let icon = 'fa-arrow-up-right-from-square';
         let isPrimary = false;
 
@@ -359,12 +369,17 @@
         else if (text.includes('resume') || text.includes('pdf') || text.includes('cv')) {
           icon = 'fa-file-pdf';
           isPrimary = true;
-        } else if (text.includes('mail') || text.includes('contact')) icon = 'fa-envelope';
+        } else if (link.href.startsWith('tel:')) icon = 'fa-phone';
+        else if (text.includes('mail') || text.includes('contact')) icon = 'fa-envelope';
+
+        const target = link.href.startsWith('tel:') ? '' : ' target="_blank"';
+        const phoneNumber = link.href.startsWith('tel:') ? decodeURIComponent(link.href.slice(4)) : '';
 
         linksHtml += `
-          <a href="${link.href}" target="_blank" class="cta-btn ${isPrimary ? 'cta-primary' : 'cta-secondary'}">
-            <i class="fa-solid ${icon}"></i> ${link.innerText}
+          <a href="${phoneNumber ? '#' : link.href}"${target} class="cta-btn ${isPrimary ? 'cta-primary' : 'cta-secondary'}"${phoneNumber ? ` data-phone="${phoneNumber}"` : ''}>
+            <i class="fa-solid ${icon}"></i> ${label}
           </a>
+          ${phoneNumber ? `<span class="cta-phone-number">${phoneNumber}</span>` : ''}
         `;
       });
 
@@ -380,6 +395,14 @@
         </div>
       `;
       app.appendChild(hero);
+
+      app.querySelectorAll('.cta-btn[data-phone]').forEach(button => {
+        button.addEventListener('click', event => {
+          event.preventDefault();
+          const number = button.nextElementSibling;
+          number.style.display = number.style.display === 'inline' ? 'none' : 'inline';
+        });
+      });
 
       // 2. PARSE SECTIONS (Experience, Projects, Skills)
       const h2Elements = Array.from(tempDiv.querySelectorAll('h2'));
@@ -464,7 +487,10 @@
           });
           sectionContainer.appendChild(skillsGrid);
         } else {
-          siblings.forEach(el => sectionContainer.appendChild(el.cloneNode(true)));
+          siblings.forEach(el => {
+            // Markdown horizontal rules (---) add an unwanted line and gap between sections.
+            if (el.tagName !== 'HR') sectionContainer.appendChild(el.cloneNode(true));
+          });
         }
 
         app.appendChild(sectionContainer);
