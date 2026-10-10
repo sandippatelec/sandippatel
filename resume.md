@@ -1,13 +1,9 @@
 # Sandip Patel
 ### Technical Architect
 Lead Embedded & Edge Systems Architect | Device-to-Cloud Solutions | Customer-Facing Technical Leadership | AWS Certified
-*Pune, Maharashtra • sandippatelec@gmail.com*
+- *Pune, Maharashtra*
 
-![Sandip Patel](profile.jpg)
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Profile-0A66C2?style=flat&logo=linkedin)](https://www.linkedin.com/in/sandip-patel-5116a929/)
-[![Download PDF](https://img.shields.io/badge/Resume-Download_PDF-2563EB?style=flat&logo=adobeacrobatreader)](resume.pdf)
-[Call](tel:+919876543210)
+<!-- Profile photo and external action buttons disabled for the public portfolio. -->
 <!-- [![GitHub](https://img.shields.io/badge/GitHub-Profile-181717?style=flat&logo=github)](https://github.com/your-username) -->
 
 ---
